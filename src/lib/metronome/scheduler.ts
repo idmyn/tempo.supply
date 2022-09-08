@@ -14,9 +14,9 @@ export class AudioScheduler {
 
   timerId: number;
 
-  constructor() {
+  constructor(tempo = 120) {
     this.scheduleAheadSeconds = 0.1;
-    this.tempo = 120;
+    this.tempo = tempo;
     this.context = new AudioContext();
     this.scheduler = this.scheduler.bind(this);
   }
@@ -33,27 +33,25 @@ export class AudioScheduler {
     this.nextBeatDueAt = undefined;
   }
 
-  scheduler(callbackFn: () => void) {
+  setTempo(newTempo: number) {
+    this.tempo = newTempo;
+  }
+
+  scheduler(callback: () => void) {
     const secondsPerBeat = 60.0 / this.tempo;
 
     if (this.nextBeatDueAt === undefined) {
-      // don't play the first beat because it sounds too close to the second
-      this.nextBeatDueAt = this.context.currentTime + secondsPerBeat;
+      this.nextBeatDueAt = this.context.currentTime + this.scheduleAheadSeconds;
     }
 
-    // while there are notes that will need to play before the next interval,
-    // schedule them and advance the pointer
     while (
       this.nextBeatDueAt <
       this.context.currentTime + this.scheduleAheadSeconds
     ) {
-      callbackFn();
+      callback();
       this.nextBeatDueAt += secondsPerBeat;
     }
 
-    this.timerId = setTimeout(
-      () => this.scheduler(callbackFn),
-      this.lookaheadMs
-    );
+    this.timerId = setTimeout(() => this.scheduler(callback), this.lookaheadMs);
   }
 }

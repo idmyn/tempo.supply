@@ -4,6 +4,8 @@
   import { makeNoise } from "./noise";
   import { AudioScheduler } from "./scheduler";
 
+  let tempo = 120;
+
   let scheduler: AudioScheduler | undefined;
   onMount(() => {
     scheduler = new AudioScheduler();
@@ -19,20 +21,25 @@
     }
   };
 
-  const testScheduler = () => {
-    console.log(scheduler.nowSeconds());
-    console.log(scheduler.debug());
-  };
+  $: scheduler?.setTempo(tempo);
 </script>
 
 <div id="container">
   <button on:click={toggleIsPlaying}>
     {isPlaying ? "pause" : "play"}
   </button>
-  <button on:click={testScheduler}>test noise</button>
+  <div id="tempo">tempo: {tempo}</div>
+  <div>
+    <button on:click={() => (tempo -= 10)}>-10</button>
+    <button on:click={() => (tempo += 10)}>+10</button>
+  </div>
 </div>
 
 <style>
+  #tempo {
+    font-size: 3rem;
+  }
+
   #container {
     width: 50vw;
     height: 50vh;

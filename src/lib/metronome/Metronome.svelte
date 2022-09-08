@@ -25,29 +25,60 @@
 </script>
 
 <div id="container">
-	<button on:click={toggleIsPlaying}>
-		{isPlaying ? "pause" : "play"}
-	</button>
-	<div id="tempo">tempo: {tempo}</div>
-	<div>
-		<button on:click={() => (tempo -= 10)}>-10</button>
-		<button on:click={() => (tempo += 10)}>+10</button>
+	<div id="current-tempo">{tempo}</div>
+	<div id="adjustment-buttons">
+		<button>-10</button>
+		<button>-5</button>
+		<button>+5</button>
+		<button>+10</button>
 	</div>
+	<button id="toggle-playing" on:click={toggleIsPlaying}>
+		{isPlaying ? "stop" : "start"}
+	</button>
 </div>
 
-<style>
-	#tempo {
-		font-size: 3rem;
+<style lang="scss">
+	#container {
+		width: 100vw;
+		text-align: center;
+		margin-top: 40vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 	}
 
-	#container {
-		width: 50vw;
-		height: 50vh;
+	#current-tempo {
+		height: 20vh;
 		display: grid;
 		place-items: center;
+		font-size: 60px;
+		font-weight: 700;
+	}
+
+	#adjustment-buttons {
+		display: flex;
+		justify-content: space-around;
+		margin: 5vh auto 10vh;
+		min-width: 400px;
+		button {
+			font-size: 26px;
+		}
 	}
 
 	button {
-		font-size: 40px;
+		background: none;
+		border: none;
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	#toggle-playing {
+		width: fit-content;
+		margin: auto;
+		padding: 8px;
+		font-size: 30px;
+		font-weight: normal;
+		text-decoration: underline;
 	}
 </style>

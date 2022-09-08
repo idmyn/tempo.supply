@@ -3,55 +3,55 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#playing_the_audio_in_time
 
 export class AudioScheduler {
-  lookaheadMs: number;
-  scheduleAheadSeconds: number;
+	lookaheadMs: number;
+	scheduleAheadSeconds: number;
 
-  tempo: number;
+	tempo: number;
 
-  nextBeatDueAt: number;
+	nextBeatDueAt: number;
 
-  context: AudioContext;
+	context: AudioContext;
 
-  timerId: number;
+	timerId: number;
 
-  constructor(tempo = 120) {
-    this.scheduleAheadSeconds = 0.1;
-    this.tempo = tempo;
-    this.context = new AudioContext();
-    this.scheduler = this.scheduler.bind(this);
-  }
+	constructor(tempo = 120) {
+		this.scheduleAheadSeconds = 0.1;
+		this.tempo = tempo;
+		this.context = new AudioContext();
+		this.scheduler = this.scheduler.bind(this);
+	}
 
-  start(callbackFn: () => void) {
-    if (this.context.state === "suspended") {
-      this.context.resume();
-    }
-    this.scheduler(callbackFn);
-  }
+	start(callbackFn: () => void) {
+		if (this.context.state === "suspended") {
+			this.context.resume();
+		}
+		this.scheduler(callbackFn);
+	}
 
-  stop() {
-    clearTimeout(this.timerId);
-    this.nextBeatDueAt = undefined;
-  }
+	stop() {
+		clearTimeout(this.timerId);
+		this.nextBeatDueAt = undefined;
+	}
 
-  setTempo(newTempo: number) {
-    this.tempo = newTempo;
-  }
+	setTempo(newTempo: number) {
+		this.tempo = newTempo;
+	}
 
-  scheduler(callback: () => void) {
-    const secondsPerBeat = 60.0 / this.tempo;
+	scheduler(callback: () => void) {
+		const secondsPerBeat = 60.0 / this.tempo;
 
-    if (this.nextBeatDueAt === undefined) {
-      this.nextBeatDueAt = this.context.currentTime + this.scheduleAheadSeconds;
-    }
+		if (this.nextBeatDueAt === undefined) {
+			this.nextBeatDueAt = this.context.currentTime + this.scheduleAheadSeconds;
+		}
 
-    while (
-      this.nextBeatDueAt <
-      this.context.currentTime + this.scheduleAheadSeconds
-    ) {
-      callback();
-      this.nextBeatDueAt += secondsPerBeat;
-    }
+		while (
+			this.nextBeatDueAt <
+			this.context.currentTime + this.scheduleAheadSeconds
+		) {
+			callback();
+			this.nextBeatDueAt += secondsPerBeat;
+		}
 
-    this.timerId = setTimeout(() => this.scheduler(callback), this.lookaheadMs);
-  }
+		this.timerId = setTimeout(() => this.scheduler(callback), this.lookaheadMs);
+	}
 }

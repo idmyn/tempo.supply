@@ -9,7 +9,8 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "howler": "^2.2.3"
+    "howler": "^2.2.3",
+    "nosleep.js": "^0.12.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.1",

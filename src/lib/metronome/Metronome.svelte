@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import NoSleep from "nosleep.js";
 
 	import { makeNoise } from "./noise";
 	import { AudioScheduler } from "./scheduler";
@@ -7,8 +8,10 @@
 	let tempo = 120;
 
 	let scheduler: AudioScheduler | undefined;
+	let noSleep: NoSleep | undefined;
 	onMount(() => {
 		scheduler = new AudioScheduler();
+		noSleep = new NoSleep();
 	});
 
 	let isPlaying: boolean = false;
@@ -16,8 +19,10 @@
 		isPlaying = !isPlaying;
 		if (isPlaying) {
 			scheduler.start(makeNoise);
+			noSleep.enable();
 		} else {
 			scheduler.stop();
+			noSleep.disable();
 		}
 	};
 

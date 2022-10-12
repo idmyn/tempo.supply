@@ -120,4 +120,14 @@
 			grid-row: 3 / 4;
 		}
 	}
+
+	@media (max-height: 600px) {
+		#adjustment-buttons {
+			grid-row: 1 / 2;
+			align-self: end;
+		}
+		#toggle-playing {
+			grid-row: 3 / 4;
+		}
+	}
 </style>

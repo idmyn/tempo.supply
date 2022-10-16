@@ -4,6 +4,7 @@
 
 	import { makeNoise } from "./noise";
 	import { AudioScheduler } from "./scheduler";
+	import { settings } from "src/store";
 
 	let tempo = 120;
 
@@ -22,7 +23,10 @@
 			noSleep.enable();
 		} else {
 			scheduler.stop();
-			noSleep.disable();
+
+			if ($settings.alwaysStayAwake.value === false) {
+				noSleep.disable();
+			}
 		}
 	};
 

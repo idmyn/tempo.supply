@@ -1,5 +1,3 @@
 # tempo.supply
 
-## todo
-
-- credit icon: https://icons8.com/license
+a really simple metronome app
